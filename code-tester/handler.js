@@ -5,7 +5,7 @@ module.exports.hello = async (event) => {
   const testFunction = eval(code)
   const response = testFunction(args)
 
-  const isExpectedResponse = response === expectedResponse
+  const isExpectedResponse = JSON.stringify(response) === JSON.stringify(expectedResponse)
 
   return {
     statusCode: 200,
