@@ -9,6 +9,9 @@
     "lint": "./node_modules/.bin/eslint . --ext .ts",
     "lint:fix": "./node_modules/.bin/eslint . --ext .ts --fix",
     "flowgen": "for file in $(find ./dist -name *.d.ts -type f); do ./node_modules/.bin/flowgen ${file} -o ${file/.d.ts/.js.flow} --add-flow-header; done;",
+    "generate:prisma": "npx prisma generate",
+    "migrate:up": "npx prisma migrate deploy",
+    "migrate:dev": "npx prisma migrate dev",
     "heroku-postbuild": "npx prisma migrate deploy && tsc"
   },
   "keywords": [],
@@ -42,6 +45,7 @@
     }
   },
   "dependencies": {
+    "@prisma/client": "^3.3.0",
     "express": "^4.17.1"
   }
 }

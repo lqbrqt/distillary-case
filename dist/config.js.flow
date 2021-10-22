@@ -4,3 +4,5 @@
  * Flowgen v1.15.0
  * @flow
  */
+
+declare export var EXPRESS_PORT: string | number;
