@@ -8,7 +8,8 @@
     "start": "node dist",
     "lint": "./node_modules/.bin/eslint . --ext .ts",
     "lint:fix": "./node_modules/.bin/eslint . --ext .ts --fix",
-    "flowgen": "for file in $(find ./dist -name *.d.ts -type f); do ./node_modules/.bin/flowgen ${file} -o ${file/.d.ts/.js.flow} --add-flow-header; done;"
+    "flowgen": "for file in $(find ./dist -name *.d.ts -type f); do ./node_modules/.bin/flowgen ${file} -o ${file/.d.ts/.js.flow} --add-flow-header; done;",
+    "heroku-postbuild": "npx prisma migrate deploy && tsc"
   },
   "keywords": [],
   "author": "wellfail",

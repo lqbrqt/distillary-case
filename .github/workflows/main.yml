@@ -1,0 +1,19 @@
+name: Deploy Dev
+on:
+  push:
+    branches:
+      - main
+env:
+  NODE_ENV: dev
+  ENV_NAME: dev
+jobs:
+  deploy-dev:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '10.x'
+    - name: Heroku deploy
+      run: git push https://heroku:c748c7f4-8d18-4ef1-9bee-2d95ae689595@git.heroku.com/destillery.git main:master -f
+  
