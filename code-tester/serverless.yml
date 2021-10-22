@@ -1,0 +1,18 @@
+service: code-tester
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+
+plugins:
+  - serverless-offline
+
+functions:
+  hello:
+    handler: handler.hello
+    events:
+    - http:
+        path: test
+        method: post
+        cors:
+          origin: '*'
