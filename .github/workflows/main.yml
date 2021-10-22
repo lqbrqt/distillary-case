@@ -15,5 +15,5 @@ jobs:
       with:
         node-version: '10.x'
     - name: Heroku deploy
-      run: git push https://heroku:c748c7f4-8d18-4ef1-9bee-2d95ae689595@git.heroku.com/destillery.git main:master -f
+      run: git push https://heroku:c748c7f4-8d18-4ef1-9bee-2d95ae689595@git.heroku.com/destillery.git main -f
   
