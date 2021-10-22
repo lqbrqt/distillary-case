@@ -40,5 +40,8 @@
     "hooks": {
       "pre-push": "npm run lint"
     }
+  },
+  "dependencies": {
+    "express": "^4.17.1"
   }
 }
