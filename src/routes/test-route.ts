@@ -12,7 +12,7 @@ const getTestWithoutAnswers = (test: any) => {
     ans.answer = undefined
     ans.expectedResult = undefined
     acc.push(curr)
-    return curr
+    return acc
   }, [])
 
   test.questions = questionsWitoutAnswers
@@ -34,6 +34,11 @@ router.get('/test/random', async (req, res) => {
   })
 
   const rawTest = rawTests[0]
+
+  // if (rawTest.questions.length === undefined) {
+  //   rawTest.questions = [rawTest.questions]
+  // }
+
   const test = getTestWithoutAnswers(rawTest)
 
   res.send(test)

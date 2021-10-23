@@ -30,3 +30,5 @@ export const server = () => {
     console.log(`Server started at: http://localhost:${EXPRESS_PORT}`)
   })
 }
+
+//server()
