@@ -23,8 +23,9 @@ model Question {
   options    String[]
   codeArgs   String[]           
   expectedResult String?
+  timeToComplete Int?
  
-  parrentTest   Test        @relation(fields: [parrentTestId], references: [id])
+  parrentTest   Test        @relation(fields: [parrentTestId], references: [id], onDelete: Cascade)
   parrentTestId Int
 
   competeAnswers  Answer[]
@@ -44,7 +45,7 @@ model Answer {
   questionId  Int
   isRight   Boolean
 
-  inCompleteTest  CompleteTest  @relation(fields: [inCompleteTestId], references: [id])
+  inCompleteTest  CompleteTest  @relation(fields: [inCompleteTestId], references: [id], onDelete: Cascade)
   inCompleteTestId  Int
 }
 
@@ -59,5 +60,6 @@ model CompleteTest {
 model Test {
   id        Int             @id @default(autoincrement())
   name      String          @db.VarChar(64)
-  questions Question[]
+  
+  questions Question[] 
 }
