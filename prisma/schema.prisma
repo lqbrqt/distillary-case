@@ -21,13 +21,13 @@ model Question {
   text       String         @db.VarChar(128)
   answer     String?  
   options    String[]
-  codeArgs   String[]
-  exectedResult String?
-  code          String?
-
+  codeArgs   String[]           
+  expectedResult String?
  
   parrentTest   Test        @relation(fields: [parrentTestId], references: [id])
   parrentTestId Int
+
+  competeAnswers  Answer[]
 }
 
 model User {
@@ -35,15 +35,25 @@ model User {
   nickname  String          @db.VarChar(64)   @unique
   phoneNumber String        @db.VarChar(16)   @unique
 
-  answers   Answer[]
+  completedTests  CompleteTest[]
 }
 
 model Answer {
   id        Int             @id @default(autoincrement())
-  user      User            @relation(fields: [userId], references: [id])
-  userId    Int
+  question  Question        @relation(fields: [questionId], references: [id])
+  questionId  Int
+  isRight   Boolean
 
-  isRigth   Boolean
+  inCompleteTest  CompleteTest  @relation(fields: [inCompleteTestId], references: [id])
+  inCompleteTestId  Int
+}
+
+model CompleteTest {
+  id        Int             @id @default(autoincrement())
+  answers Answer[]
+  rightAnswers  Int
+  user    User    @relation(fields: [userId], references:[id])
+  userId  Int
 }
 
 model Test {
