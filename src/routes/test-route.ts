@@ -5,6 +5,23 @@ import prisma from '../prisma-client'
 
 const router = Router()
 
+const getSynonims = async (text) => {
+  const result = await request.post('http://paraphraser.ru/api', {
+    formData: {
+      token: '8004cba6441267f0bb2fdb0f446d0ef56d690a89',
+      // eslint-disable-next-line id-length
+      c: 'syns',
+      lang: 'ru',
+      top: 5,
+      query: text,
+      forms: 0,
+      scores: 0,
+    },
+  })
+
+  return JSON.parse(result).response['1'].syns
+}
+
 const getTestWithoutAnswers = (test: any) => {
   const questionsWitoutAnswers = test.questions.reduce((acc: any, curr) => {
     const ans = curr
@@ -133,7 +150,7 @@ router.post('/test/:id', async (req, res) => {
       case 'textQuestion': {
         const question = rightQuestions.find((elem) => elem.id === answer.id)
 
-        if (question.answer === answer.text) {
+        if (question.answer === answer.text || (await getSynonims(question.answer)).includes(answer.text)) {
           rightAnswersCounter++
           questionsResult.push({
             questionId: answer.id,
