@@ -123,12 +123,12 @@ router.post('/test/:id', async (req, res) => {
           rightAnswersCounter++
           questionsResult.push({
             questionId: answer.id,
-            isRight: true
+            isRight: true,
           })
-        }else{
+        } else {
           questionsResult.push({
             questionId: answer.id,
-            isRight: false
+            isRight: false,
           })
         }
         break
@@ -142,12 +142,12 @@ router.post('/test/:id', async (req, res) => {
           rightAnswersCounter++
           questionsResult.push({
             questionId: answer.id,
-            isRight: true
+            isRight: true,
           })
-        }else{
+        } else {
           questionsResult.push({
             questionId: answer.id,
-            isRight: false
+            isRight: false,
           })
         }
         break
@@ -184,7 +184,7 @@ router.post('/test/:id', async (req, res) => {
   } else {
     userId = user.id
   }
-  
+
   console.log(questionsResult)
 
   await prisma.completeTest.create({
