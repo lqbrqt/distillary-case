@@ -124,7 +124,7 @@ router.post('/test/:id', async (req, res) => {
         // eslint-disable-next-line eqeqeq
         const question = rightQuestions.find((elem) => elem.id == answer.id)
 
-        if (await checkCodeOnLambda(answer.text, answer.id, question.codeArgs, question.expectedResult)) {
+        if (await checkCodeOnLambda(answer.text.replace(/\\n/g, ''), answer.id, question.codeArgs, question.expectedResult)) {
           rightAnswersCounter++
           questionsResult.push({
             questionId: answer.id,
@@ -189,8 +189,6 @@ router.post('/test/:id', async (req, res) => {
   } else {
     userId = user.id
   }
-
-  console.log(questionsResult)
 
   await prisma.completeTest.create({
     data: {
