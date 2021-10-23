@@ -34,11 +34,6 @@ router.get('/test/random', async (req, res) => {
   })
 
   const rawTest = rawTests[0]
-
-  // if (rawTest.questions.length === undefined) {
-  //   rawTest.questions = [rawTest.questions]
-  // }
-
   const test = getTestWithoutAnswers(rawTest)
 
   res.send(test)
@@ -109,10 +104,7 @@ router.post('/test/:id', async (req, res) => {
     },
   })
 
-  const rightQuestions = testWithAnswers.questions.reduce((acc: any, curr) => {
-    acc.push(curr)
-    return acc
-  }, [])
+  const rightQuestions = testWithAnswers.questions
 
   let rightAnswersCounter = 0
 
@@ -121,8 +113,7 @@ router.post('/test/:id', async (req, res) => {
   const mapped = answers.map(async (answer) => {
     switch (answer.type) {
       case 'codeQuestion': {
-        // eslint-disable-next-line eqeqeq
-        const question = rightQuestions.find((elem) => elem.id == answer.id)
+        const question = rightQuestions.find((elem) => elem.id === answer.id)
 
         if (await checkCodeOnLambda(answer.text.replace(/\\n/g, ''), answer.id, question.codeArgs, question.expectedResult)) {
           rightAnswersCounter++
@@ -140,8 +131,7 @@ router.post('/test/:id', async (req, res) => {
       }
 
       case 'textQuestion': {
-        // eslint-disable-next-line eqeqeq
-        const question = rightQuestions.find((elem) => elem.id == answer.id)
+        const question = rightQuestions.find((elem) => elem.id === answer.id)
 
         if (question.answer === answer.text) {
           rightAnswersCounter++
