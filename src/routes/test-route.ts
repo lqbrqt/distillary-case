@@ -47,7 +47,7 @@ router.get('/test/random', async (req, res) => {
 router.get('/test/:id', async (req, res) => {
   const rawTest = await prisma.test.findFirst({
     where: {
-      id: req.params.id,
+      id: Number.parseInt(req.params.id, 10),
     },
     include: {
       questions: true,
