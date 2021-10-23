@@ -1,6 +1,6 @@
 import { Router, json } from 'express'
 
-import request from 'Request-Promise-Native'
+import request from 'request-promise-native'
 import prisma from '../prisma-client'
 
 const router = Router()
