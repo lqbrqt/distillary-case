@@ -150,7 +150,7 @@ router.post('/test/:id', async (req, res) => {
       case 'textQuestion': {
         const question = rightQuestions.find((elem) => elem.id === answer.id)
 
-        if (question.answer === answer.text || (await getSynonims(question.answer)).includes(answer.text)) {
+        if (question.answer.toLowerCase() === answer.text.toLowerCase() || (await getSynonims(question.answer.toLowerCase())).includes(answer.text.toLowerCase())) {
           rightAnswersCounter++
           questionsResult.push({
             questionId: answer.id,
