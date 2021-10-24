@@ -72,41 +72,29 @@ router.get('/test/:id', async (req, res) => {
 })
 
 const checkCodeOnLambda = async (rawCode, questionId, rawCodeArgs, expectedResponse) => {
-  const codeArgs = {}
-  let codeBody = '({'
-
-  let counter = 0
-
-  await rawCodeArgs.forEach((element) => {
-    codeArgs[`arg${counter}`] = element
-    codeBody += `arg${counter}`
-    if (counter !== rawCodeArgs.length - 1) {
-      codeBody += ', '
+  try {
+    const options = {
+      method: 'POST',
+      uri: 'https://gr6xx3za2a.execute-api.us-east-1.amazonaws.com/dev/test',
+      body: {
+        questionId,
+        args: rawCodeArgs.join(';'),
+        expectedResponse,
+        userId: 'noUser',
+        code: rawCode,
+      },
+      json: true,
     }
-    counter++
-  })
 
-  codeBody = `${codeBody}}) => { ${rawCode} }`
+    const lambdaPayload = await request(options)
 
-  const options = {
-    method: 'POST',
-    uri: 'https://gr6xx3za2a.execute-api.us-east-1.amazonaws.com/dev/test',
-    body: {
-      questionId,
-      args: codeArgs,
-      expectedResponse,
-      userId: 'noUser',
-      code: codeBody,
-    },
-    json: true,
+    if (lambdaPayload.isExpectedResponse) {
+      return true
+    }
+    return false
+  } catch (error) {
+    return false
   }
-
-  const lambdaPayload = await request(options)
-
-  if (lambdaPayload.isExpectedResponse) {
-    return true
-  }
-  return false
 }
 
 router.post('/test/:id', async (req, res) => {
@@ -132,7 +120,7 @@ router.post('/test/:id', async (req, res) => {
       case 'codeQuestion': {
         const question = rightQuestions.find((elem) => elem.id === answer.id)
 
-        if (await checkCodeOnLambda(answer.text.replace(/\\n/g, ''), answer.id, question.codeArgs, question.expectedResult)) {
+        if (await checkCodeOnLambda(answer.text.replace(/(?:\r\n|\r|\n)/g, ''), answer.id, question.codeArgs, question.expectedResult)) {
           rightAnswersCounter++
           questionsResult.push({
             questionId: answer.id,
@@ -175,10 +163,10 @@ router.post('/test/:id', async (req, res) => {
 
   const user = await prisma.user.findFirst({
     where: {
-      OR: {
-        nickname: req.body.user.nickname,
-        phoneNumber: req.body.user.phoneNumber,
-      },
+      OR: [
+        { nickname: req.body.user.nickname },
+        { phoneNumber: req.body.user.phoneNumber },
+      ],
     },
   })
 
